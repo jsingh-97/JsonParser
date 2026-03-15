@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- =====================================================================
+         Project coordinates
+    ====================================================================== -->
+    <groupId>com.jaswinder</groupId>
+    <artifactId>jsonparser</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>JSON Parser</name>
+    <description>A JSON parser implemented from scratch in Java (interview project)</description>
+
+    <!-- =====================================================================
+         Java version
+    ====================================================================== -->
+    <properties>
+        <java.version>25</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Dependency versions -->
+        <junit.version>5.10.2</junit.version>
+        <maven.surefire.version>3.2.5</maven.surefire.version>
+        <maven.compiler.version>3.13.0</maven.compiler.version>
+    </properties>
+
+    <!-- =====================================================================
+         Dependencies
+    ====================================================================== -->
+    <dependencies>
+        <!-- JUnit 5 — for unit testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- =====================================================================
+         Build configuration
+    ====================================================================== -->
+    <build>
+        <plugins>
+
+            <!-- Compiler plugin — enforce Java 17 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+            <!-- Surefire plugin — run JUnit 5 tests with mvn test -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.version}</version>
+            </plugin>
+
+            <!-- JAR plugin — adds Main-Class to MANIFEST.MF so the jar is executable -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>jsonparser.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
