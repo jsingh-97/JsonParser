@@ -1,9 +1,11 @@
 package jsonparser;
 
 import java.util.List;
+import java.util.Map;
+
 public class Main {
     public static void main(String[] args) {
-        String json = """
+        String json1 = """
             {
               "name": "Bob",
               "address": {
@@ -15,8 +17,16 @@ public class Main {
               "note": null
             }
             """;
-        Lexer lexer = new Lexer(json);
+        String json2 = """
+            {
+              "name": "Bob",
+              "note": "note"
+            }
+            """;
+        Lexer lexer = new Lexer(json2);
         List<Token> tokens = lexer.tokenize();
+        Parser parser = new Parser(tokens);
+        Map<String, Object> map = (Map<String, Object>) parser.parse();
         System.out.println("haha");
     }
 }
