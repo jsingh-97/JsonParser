@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static jsonparser.Token.Type.COMMA;
 import static jsonparser.Token.Type.RBRACKET;
 
 public class Parser {
@@ -30,7 +31,7 @@ public class Parser {
             case LBRACE -> parseObject();
             case STRING -> { advance();yield token.getValue();}
             case BOOLEAN -> {advance();yield "true".equals(token.getValue()) ? Boolean.TRUE: Boolean.FALSE;}
-            case NUMBER -> {advance(); yield token.getValue();}
+            case NUMBER -> {advance(); yield Integer.parseInt(token.getValue());}
             case LBRACKET -> parseList();
             default -> throw new JsonParseException("Unexpected token :" + token, pos);
         };
@@ -39,10 +40,16 @@ public class Parser {
         //skip [
         advance();
         List<Object> ls = new ArrayList<>();
-        while(current().getType() != RBRACKET){
-            Object obj = parseValue();
-            ls.add(obj);
-            consume(Token.Type.COMMA);
+        if(current().getType() == RBRACKET){ //empty list
+            return ls;
+        }
+        ls.add(parseValue());//first element
+        while(current().getType() == COMMA){
+            advance();
+            if(current().getType() == RBRACKET){
+                throw new JsonParseException("Trailing comma in array ", pos);
+            }
+            ls.add(parseValue());
         }
         consume(RBRACKET);
         return ls;
