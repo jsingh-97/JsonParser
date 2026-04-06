@@ -1,8 +1,11 @@
 package jsonparser;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import static jsonparser.Token.Type.RBRACKET;
 
 public class Parser {
     private List<Token> tokens;
@@ -27,10 +30,23 @@ public class Parser {
             case LBRACE -> parseObject();
             case STRING -> { advance();yield token.getValue();}
             case BOOLEAN -> {advance();yield "true".equals(token.getValue()) ? Boolean.TRUE: Boolean.FALSE;}
+            case NUMBER -> {advance(); yield token.getValue();}
+            case LBRACKET -> parseList();
             default -> throw new JsonParseException("Unexpected token :" + token, pos);
         };
     }
-
+    private Object parseList(){
+        //skip [
+        advance();
+        List<Object> ls = new ArrayList<>();
+        while(current().getType() != RBRACKET){
+            Object obj = parseValue();
+            ls.add(obj);
+            consume(Token.Type.COMMA);
+        }
+        consume(RBRACKET);
+        return ls;
+    }
     private Map<String, Object> parseObject() {
         consume(Token.Type.LBRACE);
         Map<String, Object> map = new LinkedHashMap<>();

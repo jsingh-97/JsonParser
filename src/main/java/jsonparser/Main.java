@@ -20,13 +20,20 @@ public class Main {
         String json2 = """
             {
               "name": "Bob",
-              "note": "note"
+              "note": "note",
+              "address":{
+                "city": "London"
+              },
+              "scores": 10,
+              "active": true
             }
             """;
         Lexer lexer = new Lexer(json2);
         List<Token> tokens = lexer.tokenize();
         Parser parser = new Parser(tokens);
         Map<String, Object> map = (Map<String, Object>) parser.parse();
-        System.out.println("haha");
+       for(Map.Entry<String, Object> entry: map.entrySet()){
+           System.out.println(entry.getKey() + ":" + entry.getValue());
+       }
     }
 }
