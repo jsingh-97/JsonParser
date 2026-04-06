@@ -26,6 +26,7 @@ public class Parser {
         return switch (token.getType()){
             case LBRACE -> parseObject();
             case STRING -> { advance();yield token.getValue();}
+            case BOOLEAN -> {advance();yield "true".equals(token.getValue()) ? Boolean.TRUE: Boolean.FALSE;}
             default -> throw new JsonParseException("Unexpected token :" + token, pos);
         };
     }
